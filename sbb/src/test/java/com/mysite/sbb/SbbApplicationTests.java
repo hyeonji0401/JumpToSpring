@@ -81,15 +81,21 @@ class SbbApplicationTests {
 //		this.questionRepository.delete(q);
 //		assertEquals(1, this.questionRepository.count());
 
-		Optional<Question> oq = this.questionRepository.findById(14);
-		assertTrue(oq.isPresent());
-		Question q = oq.get();
+		//답변 저장하기
+//		Optional<Question> oq = this.questionRepository.findById(14);
+//		assertTrue(oq.isPresent());
+//		Question q = oq.get();
+//
+//		Answer a = new Answer();
+//		a.setContent("네 자동으로 생성됩니다");
+//		a.setQuestion(q); //어떤 질문의 답변인지 알기 위해서
+//		a.setCreateData(LocalDateTime.now());
+//		this.answerRepository.save(a);
 
-		Answer a = new Answer();
-		a.setContent("네 자동으로 생성됩니다");
-		a.setQuestion(q); //어떤 질문의 답변인지 알기 위해서
-		a.setCreateData(LocalDateTime.now());
-		this.answerRepository.save(a);
+		Optional<Answer> oa = this.answerRepository.findById(1);
+		assertTrue(oa.isPresent());
+		Answer a = oa.get();
+		assertEquals(14, a.getQuestion().getId());
 
 	}
 
