@@ -1,5 +1,6 @@
 package com.mysite.sbb;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +9,7 @@ import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,6 +24,8 @@ class SbbApplicationTests {
 	@Autowired
 	private AnswerRepository answerRepository;
 
+	@Transactional
+	//메서드가 종료될때까지 DB세션 유지
 	@Test
 	void TestJpa() {
 		//데이터 저장하기
@@ -92,10 +96,23 @@ class SbbApplicationTests {
 //		a.setCreateData(LocalDateTime.now());
 //		this.answerRepository.save(a);
 
-		Optional<Answer> oa = this.answerRepository.findById(1);
-		assertTrue(oa.isPresent());
-		Answer a = oa.get();
-		assertEquals(14, a.getQuestion().getId());
+		//답변 조회하기
+//		Optional<Answer> oa = this.answerRepository.findById(1);
+//		assertTrue(oa.isPresent());
+//		Answer a = oa.get();
+//		assertEquals(14, a.getQuestion().getId());
+
+
+		//질문에서 답변찾기
+		Optional<Question> oq = this.questionRepository.findById(14);
+		assertTrue(oq.isPresent());
+		Question q = oq.get();
+
+		List<Answer> answerList = q.getAnswerList();
+
+		assertEquals(1, answerList.size());
+		assertEquals("네 자동으로 생성됩니다", answerList.get(0).getContent());
+
 
 	}
 
