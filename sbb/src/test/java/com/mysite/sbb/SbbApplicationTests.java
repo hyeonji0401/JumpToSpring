@@ -50,8 +50,14 @@ class SbbApplicationTests {
 //		Question q = this.questionRepository.findBySubject("sbb가 무엇인가요?");
 //		assertEquals(13, q.getId());
 
-		Question q = this.questionRepository.findBySubjectAndContent("sbb가 무엇인가요?", "sbb에 대해서 알고싶습니다");
-		assertEquals(13, q.getId());
+		//findBySubjectAndContent
+//		Question q = this.questionRepository.findBySubjectAndContent("sbb가 무엇인가요?", "sbb에 대해서 알고싶습니다");
+//		assertEquals(13, q.getId());
+
+		List<Question> qList = this.questionRepository.findBySubjectLike("sbb%");
+		//sbb%-sbb로 시작하는 문자열
+		Question q = qList.get(0);
+		assertEquals("sbb가 무엇인가요?", q.getSubject());
 
 
 	}
