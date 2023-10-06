@@ -60,14 +60,21 @@ class SbbApplicationTests {
 //		//sbb%-sbb로 시작하는 문자열
 //		Question q = qList.get(0);
 //		assertEquals("sbb가 무엇인가요?", q.getSubject());
-		
-		Optional<Question> oq =this.questionRepository.findById(13);
+
+		//데이터 수정
+//		Optional<Question> oq =this.questionRepository.findById(13);
+//		assertTrue(oq.isPresent());
+//		Question q = oq.get();
+//		q.setSubject("수정된 제목");
+//		this.questionRepository.save(q);
+
+		assertEquals(2, this.questionRepository.count());
+		//count는 해당 리포지토리의 총 데이터건수를 리턴함
+		Optional<Question> oq = this.questionRepository.findById(13);
 		assertTrue(oq.isPresent());
 		Question q = oq.get();
-		q.setSubject("수정된 제목");
-		this.questionRepository.save(q);
-
-
+		this.questionRepository.delete(q);
+		assertEquals(1, this.questionRepository.count());
 	}
 
 }
