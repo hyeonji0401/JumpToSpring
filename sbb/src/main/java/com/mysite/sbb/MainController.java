@@ -13,7 +13,7 @@ public class MainController {
         //return 값이 없을 시 오류 발생
         return "안녕하세요 sbb에 오신것을 환영합니다";
     }
-    
+
     @GetMapping("/")
     public String root(){
         //redirect: 완전히 새로운 URL로 요청
