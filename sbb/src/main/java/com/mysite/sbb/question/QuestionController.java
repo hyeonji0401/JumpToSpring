@@ -21,7 +21,7 @@ public class QuestionController {
     public String list(Model model){
         List<Question> questionList=this.questionService.getList();
         //모델 객체는 자바클래스와 템플릿 간의 연결고리 역할을 함
-        model.addAttribute("questionLIst", questionList);
+        model.addAttribute("questionList", questionList);
         return "question_list";
     }
 
