@@ -4,6 +4,7 @@ import com.mysite.sbb.answer.Answer;
 import com.mysite.sbb.answer.AnswerRepository;
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
+import com.mysite.sbb.question.QuestionService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class SbbApplicationTests {
+//
+//	@Autowired
+//	//스프링의 DI(스프링이 객체를 대신 생성하여 주입한다)기능-questionRepository 객체를 스프링이 자동으로 생성해줌
+//	private QuestionRepository questionRepository;
+//
+//	@Autowired
+//	private AnswerRepository answerRepository;
 
 	@Autowired
-	//스프링의 DI(스프링이 객체를 대신 생성하여 주입한다)기능-questionRepository 객체를 스프링이 자동으로 생성해줌
-	private QuestionRepository questionRepository;
+	private QuestionService questionService;
 
-	@Autowired
-	private AnswerRepository answerRepository;
-
-	@Transactional
-	//메서드가 종료될때까지 DB세션 유지
+//	@Transactional
+//	//메서드가 종료될때까지 DB세션 유지
+	//transactional->메서드를 하나의 트랜잭션으로 묶게됨 -> 이 메서드가 끝나야 db세션이 종료되는 것임
 	@Test
 	void TestJpa() {
 		//데이터 저장하기
@@ -103,16 +108,11 @@ class SbbApplicationTests {
 //		Answer a = oa.get();
 //		assertEquals(14, a.getQuestion().getId());
 
-
-		//질문에서 답변찾기
-		Optional<Question> oq = this.questionRepository.findById(14);
-		assertTrue(oq.isPresent());
-		Question q = oq.get();
-
-		List<Answer> answerList = q.getAnswerList();
-
-		assertEquals(1, answerList.size());
-		assertEquals("네 자동으로 생성됩니다", answerList.get(0).getContent());
+		for (int i = 1; i <= 300; i++) {
+			String subject = String.format("테스트 데이터입니다:[%03d]", i);
+			String content = "내용무";
+			this.questionService.create(subject, content);
+		}
 
 
 	}
