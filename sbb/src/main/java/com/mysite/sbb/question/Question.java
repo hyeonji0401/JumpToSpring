@@ -1,6 +1,7 @@
 package com.mysite.sbb.question;
 
 import com.mysite.sbb.answer.Answer;
+import com.mysite.sbb.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,4 +36,8 @@ public class Question {
     //mappedBy-참조 엔티티의 속성명(여기서는 answer엔티티에서 question 엔티티를 참조했다는 말임)
     //casacedType.REMOVE-질문을 삭제하면 그에 달린 답변들도 모두 함꼐 삭제
     private List<Answer> answerList;
+
+    //사용자 한 명이 여러 질문 작성 가능
+    @ManyToOne
+    private SiteUser author;
 }

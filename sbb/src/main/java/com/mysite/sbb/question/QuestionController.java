@@ -2,14 +2,18 @@ package com.mysite.sbb.question;
 
 
 import com.mysite.sbb.answer.AnswerForm;
+import com.mysite.sbb.user.SiteUser;
+import com.mysite.sbb.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 //생성자 포함
@@ -19,6 +23,7 @@ public class QuestionController {
 
     //questionService 객체는 생성자 방식을 DI규칙에 의해 주입됨
     private final QuestionService questionService;
+    private final UserService userService;
 
 //    @GetMapping("/question/list")
 //    public String list(Model model){
@@ -44,19 +49,23 @@ public class QuestionController {
         return "question_detail";
     }
 
+    //로그인 한 사람만 이 동작을 수행시킬 수 있다는 말
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/question/create")
     public String questionCreate(QuestionForm questionForm){
         return "question_form";
     }
     //메서드 오버로딩(매개변수 다른 경우 메서드명 공유)
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/question/create")
     //@valid: 설정한 검증 기능 작동
     //BindingResult: 검증이 수행될 결과 객체, 반드시 @Valid 매개변수 뒤에 위치해야함
-    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult){
+    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal){
         if(bindingResult.hasErrors()){
             return "question_form";
         }
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent());
-        return "redirect:/question_list"; //질문 저장후 질문목록으로 이동
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
+        return "redirect:/question/list"; //질문 저장후 질문목록으로 이동
     }
 }
